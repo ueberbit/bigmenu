@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file alternative to core menu management
  *
@@ -22,6 +23,18 @@
  * @author Dan (dman) Morrison dan@coders.co.nz
  * @version 2011
  */
+
+/**
+ * Implements hook_entity_type_build()
+ *
+ * @param array $entity_types
+ */
+function bigmenu_entity_type_build(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  $entity_types['menu']->setFormClass('edit_bigmenu', 'Drupal\bigmenu\MenuFormController');
+  $entity_types['menu']->setFormClass('edit_bigmenu_slice', 'Drupal\bigmenu\MenuSliceFormController');
+}
+
 
 /**
  * Declare admin links and AJAX callbacks
