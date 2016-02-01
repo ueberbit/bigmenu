@@ -216,6 +216,7 @@ function bigmenu_settings($form, &$form_state) {
  * Copied from core, and modified to limit recursion
  */
 function _bigmenu_overview_tree_form($tree, $depth = 0) {
+  return array();
   $form = &drupal_static(__FUNCTION__, array('#tree' => TRUE));
   foreach ($tree as $data) {
     $item = $data['link'];
