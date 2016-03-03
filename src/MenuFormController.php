@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 
 class MenuFormController extends DefaultMenuFormController {
@@ -153,23 +154,18 @@ class MenuFormController extends DefaultMenuFormController {
           '%count' => count($data['below']),
           '!tooltip' => t('Click to expand and show child items'),
         );
-        $text = strtr('<span class="bigmenu-toggle">+</span> <span class="count" title="!tooltip"><span class="hide-show">!show_children</span> (%count)</span>', $strings);
-        $indicator = $text;
-//        $indicator = l(
-//          $text,
-//          "admin/structure/menu/manage/{$item['menu_name']}/bigmenu-customize/subform/{$item['mlid']}",
-//          array(
-//            'html' => TRUE,
-//            'attributes' => array(
-//              'class' => array(
-//                'bigmenu-childindictor'
-//              )
-//            )
-//          )
-//        );
+        $text = strtr('+ !show_children (%count)', $strings);
+        $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
+        $url = Url::fromRoute(
+          'bigmenu.menu_link',
+          array('menu' => 'main', 'menu_link' => $mlid)
+        );
+        $indicator = \Drupal::l(
+          $text,
+          $url
+        );
 
-        $form[$mlid]['title']['#markup'] .= '<br/>' . $indicator;
-        $form[$mlid]['#attributes']['class'][] = 'bigmenu-collapsed';
+        $form[$id]['title']['#markup'] .= ' ' . $indicator->getGeneratedLink();
 
         /*
          * / End Todo
@@ -184,6 +180,8 @@ class MenuFormController extends DefaultMenuFormController {
 
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
+
+        $form['links'][$id]['title'][] = array('#markup'=>$indicator);
       }
     }
 
