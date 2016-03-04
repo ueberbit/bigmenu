@@ -52,7 +52,7 @@ class MenuSliceFormController extends MenuFormController {
    * @param int $depth
    * @return array
    */
-  protected function buildOverviewForm(array &$form, FormStateInterface $form_state, $depth = 1) {
+  protected function maxDepthbuildOverviewForm(array &$form, FormStateInterface $form_state, $depth = 1) {
     // Ensure that menu_overview_form_submit() knows the parents of this form
     // section.
     $form['#tree']  = TRUE;
@@ -102,7 +102,8 @@ class MenuSliceFormController extends MenuFormController {
 //    $this->getRequest()->attributes->set('_menu_admin', TRUE);
 //    $this->getRequest()->attributes->set('_menu_admin', FALSE);
 
-    $form = array_merge($form, $this->buildOverviewTreeForm($tree));
+    $m_tree = $this->buildOverviewTreeForm($tree);
+    $form = array_merge($form, $m_tree);
     $form = $this->buildOverviewTreeForm($tree);
     $form['#empty_text'] = t('There are no menu links yet. <a href="@link">Add link</a>.', array('@link' => url('admin/structure/menu/manage/' . $this->entity->id() . '/add')));
 

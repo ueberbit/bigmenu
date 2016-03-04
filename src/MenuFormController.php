@@ -8,6 +8,7 @@
 namespace Drupal\bigmenu;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
@@ -151,7 +152,7 @@ class MenuFormController extends DefaultMenuFormController {
         // 'below' contains both immediate children and something else
         $strings = array(
           '!show_children' => t('Show children'),
-          '%count' => count($data['below']),
+          '%count' => 123,
           '!tooltip' => t('Click to expand and show child items'),
         );
         $text = strtr('+ !show_children (%count)', $strings);
@@ -160,12 +161,14 @@ class MenuFormController extends DefaultMenuFormController {
           'bigmenu.menu_link',
           array('menu' => 'main', 'menu_link' => $mlid)
         );
-        $indicator = \Drupal::l(
-          $text,
-          $url
-        );
 
-        $form[$id]['title']['#markup'] .= ' ' . $indicator->getGeneratedLink();
+        $url->setOption('attributes', array('class' => 'use-ajax'));
+
+        $link_generator = \Drupal::service('link_generator');
+        $indicator = $link_generator->generate($text, $url);
+
+
+//        $form[$id]['title']['#markup'] .= ' ' . $indicator->getGeneratedLink();
 
         /*
          * / End Todo
@@ -181,7 +184,7 @@ class MenuFormController extends DefaultMenuFormController {
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
 
-        $form['links'][$id]['title'][] = array('#markup'=>$indicator);
+        $form['links'][$id]['title'][] = array('#markup'=>'<br />'.$indicator);
       }
     }
 
