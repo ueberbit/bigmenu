@@ -8,12 +8,12 @@
 namespace Drupal\bigmenu;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\InvokeCommand;
 
@@ -195,31 +195,6 @@ class MenuFormController extends DefaultMenuFormController
                 ),
             ),
         );
-
-        /*
-         * @TODO: Cleanup.
-         */
-//        $form['user_name'] = array(
-//            '#type' => 'item',
-//            '#title' => 'Username',
-//            '#value' => 'Username',
-//            '#url' => '#',
-//            '#description' => 'Please enter in a username',
-//            '#ajax' => array(
-//              // Function to call when event on form element triggered.
-//                'callback' => array($this, 'hund'),
-//              // Effect when replacing content. Options: 'none' (default), 'slide', 'fade'.
-//                'effect' => 'fade',
-//              // Javascript event to trigger Ajax. Currently for: 'onchange'.
-//                'event' => 'click',
-//                'progress' => array(
-//                  // Graphic shown to indicate ajax. Options: 'throbber' (default), 'bar'.
-//                    'type' => 'throbber',
-//                  // Message to show along progress graphic. Default: 'Please wait...'.
-//                    'message' => NULL,
-//                ),
-//            ),
-//        );
 
         $form['user_name'] = array(
             '#type' => 'big_menu_button',
