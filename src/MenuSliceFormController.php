@@ -186,6 +186,9 @@ class MenuSliceFormController extends MenuFormController {
     $menu = $this->entity;
     $menuLink = $this->menuLink;
 
+    $trigger = $form_state->getTriggeringElement();
+    $halt = 'halt';
+
     // Add menu links administration form for existing menus.
     if (!$menu->isNew() || $menu->isLocked()) {
       // Form API supports constructing and validating self-contained sections
@@ -221,7 +224,7 @@ class MenuSliceFormController extends MenuFormController {
 
     $menu_tree_parameters = new MenuTreeParameters();
     $menu_tree_parameters->minDepth = 0;
-    $menu_tree_parameters->maxDepth = 1;
+    $menu_tree_parameters->maxDepth = $depth;
 
     $test = MenuLinkContent::load($this->menuLink)->getPluginId();
     $menu_tree_parameters->setRoot($test);
@@ -232,6 +235,9 @@ class MenuSliceFormController extends MenuFormController {
     );
 
     $m_tree = $this->buildOverviewTreeForm($tree);
+
+
+
     $form = array_merge($form, $m_tree);
     $form = $this->buildOverviewTreeForm($tree);
     $form['#empty_text'] = t('There are no menu links yet. <a href="@link">Add link</a>.', array('@link' => url('admin/structure/menu/manage/' . $this->entity->id() . '/add')));
