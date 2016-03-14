@@ -165,7 +165,7 @@ class MenuFormController extends DefaultMenuFormController
                         '#description' => t('Show children'),
                         '#ajax' => array(
                             // Function to call when event on form element triggered.
-                            'callback' => array($this, 'hund'),
+                            'callback' => array($this, 'bigmenu_ajax_callback'),
                             // Effect when replacing content. Options: 'none' (default), 'slide', 'fade'.
                             'effect' => 'fade',
                             // Javascript event to trigger Ajax. Currently for: 'onchange'.
@@ -191,7 +191,7 @@ class MenuFormController extends DefaultMenuFormController
      * @param array $form_state
      * @return AjaxResponse
      */
-    public function hund(array &$form, array &$form_state)
+    public function bigmenu_ajax_callback(array &$form, array &$form_state)
     {
 
         $elem = $form_state->getTriggeringElement();
@@ -199,7 +199,7 @@ class MenuFormController extends DefaultMenuFormController
         $params = new MenuTreeParameters();
         $params->setRoot($menuLinkId);
 
-        $menu_link = \Drupal::entityTypeManager()->getStorage(menu_link_content)->load($menuLinkId);
+        $menu_link = \Drupal::entityTypeManager()->getStorage('menu_link_content')->load($menuLinkId);
 
         // Instantiate an AjaxResponse Object to return.
         $ajax_response = new AjaxResponse();
