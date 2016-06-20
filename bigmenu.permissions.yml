@@ -1,0 +1,7 @@
+administer bigmenu:
+  title: 'Administer Big Menu'
+  description: 'Allows configuration of Big Menu'
+
+use bigmenu:
+  title: 'Use Big Menu'
+  description: 'Allows the use of Big Menu'

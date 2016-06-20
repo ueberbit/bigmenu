@@ -115,19 +115,3 @@ function bigmenu_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_s
 //    $form['#attached']['library'][] = 'bigmenu/bigmenu';
   }
 }
-
-/**
- * Implements hook_permission().
- */
-function bigmenu_permission() {
-  return array(
-    'administer bigmenu' =>  array(
-      'title' => t('Administer Big Menu'),
-      'description' => t('Allows configuration of Big Menu'),
-    ),
-    'use bigmenu' =>  array(
-      'title' => t('Use Big Menu'),
-      'description' => t('Allows the use of Big Menu'),
-    ),
-  );
-}
