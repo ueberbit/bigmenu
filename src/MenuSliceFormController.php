@@ -15,7 +15,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 class MenuSliceFormController extends MenuFormController {
 
   /**
-   * @var \Drupal\menu_link\MenuLinkInterface
+   * @var \Drupal\Core\Menu\MenuLinkInterface
    */
   protected $menuLink;
 
