@@ -3,7 +3,7 @@
  *
  * @author dman dan@coders.co.nz
  */
-(function ($) {
+(function ($, Drupal) {
 
   Drupal.behaviors.bigmenu = {
     attach: function(context) {
@@ -143,4 +143,4 @@
         );
     }
   };
-})(jQuery);
+})(jQuery, Drupal);
