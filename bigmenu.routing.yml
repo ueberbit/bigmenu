@@ -17,7 +17,7 @@ bigmenu.menu_link:
     _permission: 'use bigmenu'
 
 #bigmenu.menu_link_js:
-#  path: 'admin/structure/menu/manage/{menu}/bigmen/link/{menu_link}/js'
+#  path: 'admin/structure/menu/manage/{menu}/bigmenu/link/{menu_link}/js'
 #  defaults:
 #    _title: 'Edit a slice of a menu'
 #    _controller: '\Drupal\bigmenu\Controller\JsSliceController::getChildren'
