@@ -20,19 +20,28 @@ use Drupal\Core\Render\Element;
  * Class MenuFormController
  * @package Drupal\bigmenu
  */
-class MenuFormController extends DefaultMenuFormController
-{
+class MenuFormController extends DefaultMenuFormController {
+
   public $tree = array();
 
   /**
+   * Overrides Drupal\menu_ui\MenuForm::buildOverviewForm() to limit the depth.
+   *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  protected function buildOverviewForm(array &$form, FormStateInterface $form_state) {
+    return $this->buildOverviewFormWithDepth($form, $form_state, 1, NULL);
+  }
+
+  /**
+   * Build a shallow version of the overview form.
+   *
    * @param int $depth
    * @param NULL $menuOpen
    * @return array
    */
-  protected function buildOverviewForm(array &$form, FormStateInterface $form_state, $depth = 1, \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link = NULL)
-  {
+  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link = NULL) {
     // Ensure that menu_overview_form_submit() knows the parents of this form
     // section.
     if (!$form_state->has('menu_overview_form_parents')) {
@@ -241,8 +250,7 @@ class MenuFormController extends DefaultMenuFormController
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @return AjaxResponse
    */
-  public function bigmenu_ajax_callback(array &$form, \Drupal\Core\Form\FormStateInterface &$form_state)
-  {
+  public function bigmenu_ajax_callback(array &$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
     $elem = $form_state->getTriggeringElement();
     $menuLinkId = $elem['#attributes']['mlid'];
 
@@ -256,8 +264,7 @@ class MenuFormController extends DefaultMenuFormController
     $this->appendSubtree(10, $menu_link);
 
     // Add a command to execute on form, jQuery .html() replaces content between tags.
-//    $ajax_response->addCommand(new HtmlCommand('.menu-edit-bigmenu-form menu-form', $this->buildOverviewForm($form, $form_state, 1)));
-    $ajax_response->addCommand(new HtmlCommand('#block-seven-content', $this->buildOverviewForm($form, $form_state, 1)));
+    $ajax_response->addCommand(new HtmlCommand('#block-seven-content', $this->buildOverviewFormWithDepth($form, $form_state, 1, $menu_link)));
 
     // Return the AjaxResponse Object.
     return $ajax_response;
