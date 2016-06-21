@@ -15,6 +15,7 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
  * Class MenuFormController
@@ -41,7 +42,7 @@ class MenuFormController extends DefaultMenuFormController {
    * @param NULL $menuOpen
    * @return array
    */
-  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link = NULL) {
+  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, MenuLinkContent $menu_link = NULL) {
     // Ensure that menu_overview_form_submit() knows the parents of this form
     // section.
     if (!$form_state->has('menu_overview_form_parents')) {
@@ -250,7 +251,7 @@ class MenuFormController extends DefaultMenuFormController {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @return AjaxResponse
    */
-  public function bigmenu_ajax_callback(array &$form, \Drupal\Core\Form\FormStateInterface &$form_state) {
+  public function bigmenu_ajax_callback(array &$form, FormStateInterface $form_state) {
     $elem = $form_state->getTriggeringElement();
     $menuLinkId = $elem['#attributes']['mlid'];
 
@@ -263,8 +264,10 @@ class MenuFormController extends DefaultMenuFormController {
 
     $this->appendSubtree(10, $menu_link);
 
+    $form = $this->buildOverviewFormWithDepth($form, $form_state, 1, $menu_link);
+
     // Add a command to execute on form, jQuery .html() replaces content between tags.
-    $ajax_response->addCommand(new HtmlCommand('#block-seven-content', $this->buildOverviewFormWithDepth($form, $form_state, 1, $menu_link)));
+    $ajax_response->addCommand(new HtmlCommand('#block-seven-content', $form));
 
     // Return the AjaxResponse Object.
     return $ajax_response;
