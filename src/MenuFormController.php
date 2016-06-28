@@ -12,10 +12,10 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
-use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\Core\Url;
 
 /**
  * Class MenuFormController
@@ -30,6 +30,7 @@ class MenuFormController extends DefaultMenuFormController {
    *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @return array
    */
   protected function buildOverviewForm(array &$form, FormStateInterface $form_state) {
     return $this->buildOverviewFormWithDepth($form, $form_state, 1, NULL);
@@ -38,11 +39,13 @@ class MenuFormController extends DefaultMenuFormController {
   /**
    * Build a shallow version of the overview form.
    *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @param int $depth
-   * @param NULL $menuOpen
+   * @param string $menu_link
    * @return array
    */
-  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, MenuLinkContent $menu_link = NULL) {
+  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, $menu_link = NULL) {
     // Ensure that menu_overview_form_submit() knows the parents of this form
     // section.
     if (!$form_state->has('menu_overview_form_parents')) {
@@ -57,6 +60,7 @@ class MenuFormController extends DefaultMenuFormController {
       '#theme' => 'table__menu_overview',
       '#header' => array(
         $this->t('Menu link'),
+        $this->t('Tree root'),
         array(
           'data' => $this->t('Enabled'),
           'class' => array('checkbox'),
@@ -130,7 +134,7 @@ class MenuFormController extends DefaultMenuFormController {
     $tree_params->setMaxDepth($depth);
 
     if ($root) {
-      $tree_params->setRoot($root->getPluginId());
+      $tree_params->setRoot($root);
     }
 
     $tree = $this->menuTree->load($this->entity->id(), $tree_params);
@@ -197,6 +201,26 @@ class MenuFormController extends DefaultMenuFormController {
           ),
           $element['title'],
         );
+
+        $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
+
+        $uri = Url::fromRoute('bigmenu.menu_link', array(
+          'menu' => $this->entity->id(),
+          'menu_link' => $element['#item']->link->getPluginId(),
+        ));
+
+        if ($form['links'][$id]['#item']->hasChildren) {
+          if (is_null($menu_link) || (isset($menu_link) && $menu_link->id() != $mlid)) {
+            $form['links'][$id]['root'][] = array(
+              '#type' => 'link',
+              '#title' => t('Edit children items'),
+              '#url' => $uri,
+            );
+          }
+        } else {
+          $form['links'][$id]['root'][] = array();
+        }
+
         $form['links'][$id]['enabled'] = $element['enabled'];
         $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = array('checkbox', 'menu-enabled');
 
@@ -207,39 +231,6 @@ class MenuFormController extends DefaultMenuFormController {
 
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
-
-        $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
-
-        if ($form['links'][$id]['#item']->hasChildren) {
-          if (is_null($menu_link) || (isset($menu_link) && $menu_link->id() != $mlid)) {
-            $form['links'][$id]['title'][] = array(
-              '#type' => 'big_menu_button',
-              '#title' => t('Show Children'),
-              '#value' => 'Edit Children',
-              '#name' => $mlid,
-              '#attributes' => array('mlid' => $mlid),
-              '#url' => '#',
-              '#description' => t('Show children'),
-              '#ajax' => array(
-                // Function to call when event on form element triggered.
-                'callback' => array(
-                  $this,
-                  'Drupal\bigmenu\MenuFormController::bigmenu_ajax_callback'
-                ),
-                // Effect when replacing content. Options: 'none' (default), 'slide', 'fade'.
-                'effect' => 'none',
-                // Javascript event to trigger Ajax. Currently for: 'onchange'.
-                'event' => 'click',
-                'progress' => array(
-                  // Graphic shown to indicate ajax. Options: 'throbber' (default), 'bar'.
-                  'type' => 'throbber',
-                  // Message to show along progress graphic. Default: 'Please wait...'.
-                  'message' => NULL,
-                ),
-              ),
-            );
-          }
-        }
       }
     }
   }
