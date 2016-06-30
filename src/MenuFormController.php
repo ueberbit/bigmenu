@@ -202,15 +202,13 @@ class MenuFormController extends DefaultMenuFormController {
           $element['title'],
         );
 
-        $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
-
         $uri = Url::fromRoute('bigmenu.menu_link', array(
           'menu' => $this->entity->id(),
           'menu_link' => $element['#item']->link->getPluginId(),
         ));
 
         if ($form['links'][$id]['#item']->hasChildren) {
-          if (is_null($menu_link) || (isset($menu_link) && $menu_link->id() != $mlid)) {
+          if (is_null($menu_link)) {
             $form['links'][$id]['root'][] = array(
               '#type' => 'link',
               '#title' => t('Edit children items'),
