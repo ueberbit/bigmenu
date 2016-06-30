@@ -60,7 +60,6 @@ class MenuFormController extends DefaultMenuFormController {
       '#theme' => 'table__menu_overview',
       '#header' => array(
         $this->t('Menu link'),
-        $this->t('Tree root'),
         array(
           'data' => $this->t('Enabled'),
           'class' => array('checkbox'),
@@ -202,23 +201,6 @@ class MenuFormController extends DefaultMenuFormController {
           $element['title'],
         );
 
-        $uri = Url::fromRoute('bigmenu.menu_link', array(
-          'menu' => $this->entity->id(),
-          'menu_link' => $element['#item']->link->getPluginId(),
-        ));
-
-        if ($form['links'][$id]['#item']->hasChildren) {
-          if (is_null($menu_link)) {
-            $form['links'][$id]['root'][] = array(
-              '#type' => 'link',
-              '#title' => t('Edit children items'),
-              '#url' => $uri,
-            );
-          }
-        } else {
-          $form['links'][$id]['root'][] = array();
-        }
-
         $form['links'][$id]['enabled'] = $element['enabled'];
         $form['links'][$id]['enabled']['#wrapper_attributes']['class'] = array('checkbox', 'menu-enabled');
 
@@ -229,6 +211,39 @@ class MenuFormController extends DefaultMenuFormController {
 
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
+
+        $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
+
+        if ($form['links'][$id]['#item']->hasChildren) {
+          if (is_null($menu_link) || (isset($menu_link) && $menu_link->id() != $mlid)) {
+            $form['links'][$id]['title'][] = array(
+              '#type' => 'big_menu_button',
+              '#title' => t('Show Children'),
+              '#value' => 'Edit Children',
+              '#name' => $mlid,
+              '#attributes' => array('mlid' => $mlid),
+              '#url' => '#',
+              '#description' => t('Show children'),
+              '#ajax' => array(
+                // Function to call when event on form element triggered.
+                'callback' => array(
+                  $this,
+                  'Drupal\bigmenu\MenuFormController::bigmenu_ajax_callback'
+                ),
+                // Effect when replacing content. Options: 'none' (default), 'slide', 'fade'.
+                'effect' => 'none',
+                // Javascript event to trigger Ajax. Currently for: 'onchange'.
+                'event' => 'click',
+                'progress' => array(
+                  // Graphic shown to indicate ajax. Options: 'throbber' (default), 'bar'.
+                  'type' => 'throbber',
+                  // Message to show along progress graphic. Default: 'Please wait...'.
+                  'message' => NULL,
+                ),
+              ),
+            );
+          }
+        }
       }
     }
   }

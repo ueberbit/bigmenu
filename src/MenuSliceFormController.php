@@ -55,7 +55,7 @@ class MenuSliceFormController extends MenuFormLinkController {
       '#theme' => 'table__menu_overview',
       '#header' => array(
         $this->t('Menu link'),
-        $this->t('Use as tree root'),
+        $this->t('Edit children'),
         array(
           'data' => $this->t('Enabled'),
           'class' => array('checkbox'),

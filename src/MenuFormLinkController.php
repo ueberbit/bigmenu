@@ -41,7 +41,7 @@ class MenuFormLinkController extends MenuFormController {
 
     $form['links']['#header'] = array(
       $this->t('Menu link'),
-      $this->t('Tree root'),
+      $this->t('Edit children'),
       array(
         'data' => $this->t('Enabled'),
         'class' => array('checkbox'),

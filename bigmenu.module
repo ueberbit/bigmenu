@@ -31,7 +31,7 @@
  */
 function bigmenu_entity_type_build(array &$entity_types) {
   /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
-  $entity_types['menu']->setFormClass('edit_bigmenu', 'Drupal\bigmenu\MenuFormController');
+  $entity_types['menu']->setFormClass('edit_bigmenu', 'Drupal\bigmenu\MenuFormLinkController');
   $entity_types['menu']->setFormClass('edit_bigmenu_slice', 'Drupal\bigmenu\MenuSliceFormController');
 }
 
