@@ -12,6 +12,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 
 class MenuSliceFormController extends MenuFormLinkController {
 
@@ -39,6 +40,15 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     // Use Menu UI adminforms
     $form['#attached']['library'][] = 'menu_ui/drupal.menu_ui.adminforms';
+
+    // Add a link to go back to the full menu.
+    $form['back_link'][] = array(
+      '#type' => 'link',
+      '#title' => sprintf('Back to top level %s menu',  $this->entity->id()),
+      '#url' => Url::fromRoute('bigmenu.menu', array(
+        'menu' => $this->entity->id(),
+      ))
+    );
 
     $form['links'] = array(
       '#type' => 'table',
