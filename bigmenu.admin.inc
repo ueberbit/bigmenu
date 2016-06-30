@@ -14,7 +14,7 @@
 /**
  * We re-use as much of the core menu rendering tools as possible.
  */
-module_load_include('inc', 'menu', 'menu.admin');
+module_load_include('inc', 'menu_ui', 'menu.admin');
 
 function bigmenu_overview_form($form, &$form_state, $menu, $depth = 1) {
   global $menu_admin;
