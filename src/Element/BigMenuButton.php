@@ -96,6 +96,7 @@ class BigMenuButton extends FormElement {
     }
     $element['#attributes']['class'][] = 'js-form-submit';
     $element['#attributes']['class'][] = 'form-submit';
+    $element['#attributes']['class'][] = 'bigmenu-childindicator';
 
     if (!empty($element['#attributes']['disabled'])) {
       $element['#attributes']['class'][] = 'is-disabled';

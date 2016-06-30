@@ -1,0 +1,9 @@
+{
+    "name": "becw/bigmenu",
+    "description": "Edit sections of a menu at a time.",
+    "type": "drupal-module",
+    "homepage": "https://www.drupal.org/project/bigmenu",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/bigmenu"
+    }
+}

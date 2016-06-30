@@ -1,0 +1,5 @@
+services:
+  bigmenu.route_subscriber:
+    class: Drupal\bigmenu\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

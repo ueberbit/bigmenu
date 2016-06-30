@@ -27,62 +27,13 @@
 /**
  * Implements hook_entity_type_build()
  *
- * @param array $entity_types
+ * Add the bigmenu form controllers to the entity type config object.
  */
 function bigmenu_entity_type_build(array &$entity_types) {
   /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
-  $entity_types['menu']->setFormClass('edit_bigmenu', 'Drupal\bigmenu\MenuFormController');
+  $entity_types['menu']->setFormClass('edit_bigmenu', 'Drupal\bigmenu\MenuFormLinkController');
   $entity_types['menu']->setFormClass('edit_bigmenu_slice', 'Drupal\bigmenu\MenuSliceFormController');
 }
-
-
-/**
- * Declare admin links and AJAX callbacks
- *
- * hook_menu()
- */
-//function bigmenu_menu() {
-//  $items['admin/structure/bigmenu-customize/%menu'] = array(
-//    'title' => 'Customize menu',
-//    'page callback' => 'drupal_get_form',
-//    'page arguments' => array('bigmmenu_overview_form', 3),
-//    'title callback' => 'menu_overview_title',
-//    'title arguments' => array(3),
-//    'access arguments' => array('use bigmenu'),
-//    'type' => MENU_CALLBACK,
-//  );
-//  // Edit just a part of a menu. Arg 5 is the parent menu link id
-//  $items['admin/structure/bigmenu-customize/%menu/subform/%menau_link'] = array(
-//    'title' => 'Edit a slice of a menu',
-//    'page callback' => 'drupal_get_form',
-//    'page arguments' => array('bigmenu_slice_form', 3, 5),
-//    'title callback' => 'bigmenu_parent_title',
-//    'title arguments' => array(5),
-//    'access arguments' => array('use bigmenu'),
-//    'type' => MENU_CALLBACK,
-//    'file' => 'bigmenu.admin.inc',
-//  );
-//  // Same as above, but triggers an equivalent json response
-//  // This also expects arg 7,8 to be a form ID and form cache id
-//  $items['admin/structure/bigmenu-customize/%menu/subform/%menu_link/js'] = array(
-//    'page callback' => 'bigmenu_slice_form_js',
-//    'page arguments' => array(3, 5),
-//    'access arguments' => array('use bigmenu'),
-//    'type' => MENU_CALLBACK,
-//    'file' => 'bigmenu.admin.inc',
-//  );
-//  $items['admin/config/user-interface/bigmenu'] = array(
-//    'title' => t('Big Menu Settings'),
-//    'page callback' => 'drupal_get_form',
-//    'page arguments' => array('bigmenu_settings'),
-//    'description' => t('Configure settings for bigmenu module.'),
-//    'access arguments' => array('administer bigmenu'),
-//    'type' => MENU_NORMAL_ITEM,
-//    'file' => 'bigmenu.admin.inc',
-//  );
-//
-//  return $items;
-//}
 
 /**
  * Take over core menu admin page
@@ -106,22 +57,6 @@ function bigmenu_theme() {
       'file' => 'bigmenu.admin.inc',
       'arguments' => array('form' => NULL),
       'render element' => 'form',
-    ),
-  );
-}
-
-/**
- * Implements hook_permission().
- */
-function bigmenu_permission() {
-  return array(
-    'administer bigmenu' =>  array(
-      'title' => t('Administer Big Menu'),
-      'description' => t('Allows configuration of Big Menu'),
-    ),
-    'use bigmenu' =>  array(
-      'title' => t('Use Big Menu'),
-      'description' => t('Allows the use of Big Menu'),
     ),
   );
 }

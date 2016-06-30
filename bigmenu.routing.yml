@@ -15,19 +15,3 @@ bigmenu.menu_link:
   requirements:
     _entity_access: 'menu.update'
     _permission: 'use bigmenu'
-
-#bigmenu.menu_link_js:
-#  path: 'admin/structure/menu/manage/{menu}/bigmen/link/{menu_link}/js'
-#  defaults:
-#    _title: 'Edit a slice of a menu'
-#    _controller: '\Drupal\bigmenu\Controller\JsSliceController::getChildren'
-#  requirements:
-#    #_entity_access: 'menu.update'
-#    _permission: 'use bigmenu'
-
-#bigmenu.settings:
-#  defaults:
-#    _title: 'Big Menu Settings'
-#    _description: 'Configure settings for bigmenu module.'
-#  requirements:
-#    _permission: 'administer bigmenu'
