@@ -12,10 +12,10 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\Core\Url;
 
 /**
  * Class MenuFormController
